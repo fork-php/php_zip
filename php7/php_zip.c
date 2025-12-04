@@ -972,7 +972,7 @@ static zval *php_zip_get_property_ptr_ptr(zval *object, zval *member, int type, 
 	}
 
 	if (member == &tmp_member) {
-		zval_dtor(member);
+		zval_ptr_dtor_nogc(member);
 	}
 
 	return retval;
@@ -1011,7 +1011,7 @@ static zval *php_zip_read_property(zval *object, zval *member, int type, void **
 	}
 
 	if (member == &tmp_member) {
-		zval_dtor(member);
+		zval_ptr_dtor_nogc(member);
 	}
 
 	return retval;
@@ -1059,7 +1059,7 @@ static int php_zip_has_property(zval *object, zval *member, int type, void **cac
 	}
 
 	if (member == &tmp_member) {
-		zval_dtor(member);
+		zval_ptr_dtor_nogc(member);
 	}
 
 	return retval;
@@ -1933,7 +1933,7 @@ static void php_zip_add_from_pattern(INTERNAL_FUNCTION_PARAMETERS, int type) /* 
 
 				if (php_zip_add_file(ze_obj, Z_STRVAL_P(zval_file), Z_STRLEN_P(zval_file),
 					entry_name, entry_name_len, 0, 0, -1, opts.flags) < 0) {
-					zval_dtor(return_value);
+					zval_ptr_dtor_nogc(return_value);
 					RETURN_FALSE;
 				}
 				if (opts.comp_method >= 0) {
@@ -2527,9 +2527,9 @@ static ZIPARCHIVE_METHOD(getExternalAttributesIndex)
 			(zip_flags_t)flags, &opsys, &attr) < 0) {
 		RETURN_FALSE;
 	}
-	zval_dtor(z_opsys);
+	zval_ptr_dtor_nogc(z_opsys);
 	ZVAL_LONG(z_opsys, opsys);
-	zval_dtor(z_attr);
+	zval_ptr_dtor_nogc(z_attr);
 	ZVAL_LONG(z_attr, attr);
 	RETURN_TRUE;
 }
